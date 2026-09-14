@@ -1,11 +1,11 @@
 # 🤖 AI Career Copilot
 
-> An AI-powered career assistant built with Java, Spring Boot, Spring AI, RAG, Ollama, and PostgreSQL + PGVector to help users analyze resumes, match jobs, identify skill gaps, practice technical interviews, and build a focused career roadmap.
+> An AI-powered career assistant built with **Java, Spring Boot, Spring AI, RAG, Ollama, and PostgreSQL + PGVector** to help users analyze resumes, explore job fit, identify skill gaps, practice technical interviews, and build a focused career roadmap.
 
 <p align="center">
 
 ![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4-green?style=for-the-badge&logo=springboot)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-green?style=for-the-badge&logo=springboot)
 ![Spring AI](https://img.shields.io/badge/Spring%20AI-2.0.1-blue?style=for-the-badge&logo=spring)
 ![Ollama](https://img.shields.io/badge/Ollama-Local%20AI-black?style=for-the-badge)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql)
@@ -17,13 +17,13 @@
 
 ## ✨ Overview
 
-**AI Career Copilot** is a Java and Spring Boot based career intelligence application that turns a resume into an interactive AI-powered career assistant.
+**AI Career Copilot** is a Java and Spring Boot based career intelligence application that turns a resume into an interactive career assistant.
 
 Users can upload a PDF resume and use a single workspace to:
 
-- 📄 Analyze their resume
-- 💬 Ask questions about their resume
-- 🎯 Match their resume against a job description
+- 📄 Analyze the resume
+- 💬 Ask questions about the resume
+- 🎯 Compare the resume with a job description
 - 🧠 Identify skill gaps
 - 🎤 Practice technical interviews
 - 🗺️ Generate a personalized 90-day career roadmap
@@ -36,7 +36,7 @@ The application combines **Spring Boot, Spring AI, Retrieval-Augmented Generatio
 
 ## 📄 Resume Ingestion
 
-Upload a PDF resume and process it into searchable document chunks.
+Upload a PDF resume and process its content for downstream career analysis and retrieval.
 
 The application:
 
@@ -60,7 +60,7 @@ Example questions:
 - What projects have I worked on?
 - Which technologies in my resume are relevant to Java backend development?
 
-The Resume Chat feature uses **Retrieval-Augmented Generation (RAG)** to retrieve relevant resume context before generating the response.
+The Resume Chat workflow uses **retrieval-augmented generation (RAG)** to retrieve relevant resume context before producing the response.
 
 ---
 
@@ -93,6 +93,10 @@ The matcher identifies:
 - Match score
 - Recommendations for improvement
 
+Example result:
+
+**93/100 match** with a Java Backend Developer role, with **Microservices** identified as a weak or missing area in the tested job description.
+
 ---
 
 ## 🧠 Skill Gap Analyzer
@@ -107,11 +111,11 @@ It identifies:
 - Learning priorities
 - Practical learning recommendations
 
-This helps turn a job description into a structured learning plan.
+This helps turn a job description into a focused learning plan.
 
 ---
 
-## 🎤 AI Interview
+## 🎤 Technical Interview Practice
 
 Practice technical interview questions based on a selected topic.
 
@@ -125,9 +129,21 @@ Example topics:
 
 The workflow is:
 
-Select Topic → Generate Interview Question → Candidate Answers → Evaluate Answer → Score + Feedback → Improvement Suggestions
+```text
+Select Topic
+      ↓
+Get Interview Question
+      ↓
+Candidate Answers
+      ↓
+Evaluate Answer
+      ↓
+Score + Feedback
+      ↓
+Improvement Suggestions
+```
 
-The interview evaluation provides:
+The evaluation provides:
 
 - Score
 - Feedback
@@ -143,57 +159,153 @@ Generate a role-focused **90-day career roadmap** based on the user's profile an
 The roadmap is organized into:
 
 ### Days 1–30
+
 Foundation and skill strengthening
 
 ### Days 31–60
+
 Project development and technical depth
 
 ### Days 61–90
+
 Job readiness and interview preparation
 
-The roadmap also highlights priority areas that should be strengthened for the target role.
+It also highlights priority areas that should be strengthened for the target role.
 
 ---
 
 # 🧠 RAG Architecture
 
-The Resume Chat workflow follows a Retrieval-Augmented Generation architecture.
+The Resume Chat workflow follows a Retrieval-Augmented Generation architecture:
 
-Upload Resume → PDF Text Extraction → Document Chunking → Embedding Generation → PostgreSQL + PGVector → Vector Retrieval → Ollama LLM → Grounded Response
-
-The primary local AI models are:
-
-- Chat / Generation: `llama3.2:latest`
-- Embeddings: `nomic-embed-text`
+```text
+                ┌──────────────────────┐
+                │    Upload Resume     │
+                │        PDF           │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │ Document Ingestion   │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │    Text Chunking     │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │   Embedding Model    │
+                │  nomic-embed-text    │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │ PostgreSQL + PGVector│
+                └──────────┬───────────┘
+                           │
+                    User Question
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │  Vector Retrieval    │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │     Ollama LLM       │
+                │      llama3.2        │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │  Grounded Response   │
+                └──────────────────────┘
+```
 
 ---
 
 # 🏗️ Project Architecture
 
+```text
 AI-Career-Copilot/
-
+│
 ├── .mvn/
+│   └── wrapper/
+│
 ├── screenshots/
+│   ├── AI Interview3.png
+│   ├── Career Roadmap2.png
+│   ├── Career Roadmap3.png
+│   ├── Job Matcher2.png
+│   ├── Job Matcher3.png
+│   ├── Main Dashboard1.png
+│   ├── Main Dashboard2.png
+│   ├── Main Dashboard3.png
+│   ├── Resume Analyzer2.png
+│   ├── Resume Analyzer3.png
+│   ├── Resume Chat1.png
+│   ├── Resume Chat2.png
+│   └── Resume Uploaded.png
+│
 ├── src/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/hr/AICareerCopilot/
 │   │   │       ├── config/
+│   │   │       │   └── RagProperties.java
+│   │   │       │
 │   │   │       ├── controller/
+│   │   │       │   ├── CareerRoadmapController.java
+│   │   │       │   ├── ChatController.java
+│   │   │       │   ├── IngestionController.java
+│   │   │       │   ├── InterviewController.java
+│   │   │       │   ├── JobDescriptionMatcherController.java
+│   │   │       │   ├── ResumeAnalyzerController.java
+│   │   │       │   └── SkillGapAnalyzerController.java
+│   │   │       │
 │   │   │       ├── dto/
+│   │   │       │   ├── CareerRoadmapRequest.java
+│   │   │       │   ├── ChatRequest.java
+│   │   │       │   ├── InterviewRequest.java
+│   │   │       │   ├── JobMatchRequest.java
+│   │   │       │   └── SkillGapRequest.java
+│   │   │       │
 │   │   │       ├── entity/
+│   │   │       │   └── Resume.java
+│   │   │       │
 │   │   │       ├── repository/
+│   │   │       │   └── ResumeRepository.java
+│   │   │       │
 │   │   │       └── service/
+│   │   │           ├── ActiveResumeService.java
+│   │   │           ├── CareerRoadmapService.java
+│   │   │           ├── DocumentIngestionService.java
+│   │   │           ├── InterviewService.java
+│   │   │           ├── JobDescriptionMatcherService.java
+│   │   │           ├── ResumeAnalyzerService.java
+│   │   │           ├── ResumeContextService.java
+│   │   │           └── SkillGapAnalyzerService.java
+│   │   │
 │   │   └── resources/
 │   │       ├── documents/
+│   │       │   └── resume.pdf
 │   │       ├── static/
+│   │       │   └── index.html
 │   │       └── application.properties
+│   │
 │   └── test/
+│       └── java/
+│
+├── .gitattributes
+├── .gitignore
 ├── compose.yaml
 ├── pom.xml
 ├── mvnw
 ├── mvnw.cmd
 └── README.md
+```
 
 ---
 
@@ -201,8 +313,8 @@ AI-Career-Copilot/
 
 ### Backend
 
-- Java
-- Spring Boot
+- Java 21
+- Spring Boot 4.1.1
 - Spring Web
 - Spring Data JPA
 - Hibernate
@@ -218,7 +330,7 @@ AI-Career-Copilot/
 
 ### Database
 
-- PostgreSQL
+- PostgreSQL 16
 - PGVector
 
 ### Frontend
@@ -278,12 +390,16 @@ Before running the application, install:
 
 ## 1. Clone the Repository
 
-    git clone https://github.com/KritikaaSinghh/AI-Career-Copilot.git
-    cd AI-Career-Copilot
+```bash
+git clone https://github.com/KritikaaSinghh/AI-Career-Copilot.git
+cd AI-Career-Copilot
+```
 
 ## 2. Start PostgreSQL + PGVector
 
-    docker compose up -d
+```bash
+docker compose up -d
+```
 
 The application uses:
 
@@ -298,43 +414,64 @@ Make sure Ollama is installed and running.
 
 Check installed models:
 
-    ollama list
+```bash
+ollama list
+```
 
 Pull the required models:
 
-    ollama pull llama3.2:latest
-    ollama pull nomic-embed-text
+```bash
+ollama pull llama3.2:latest
+ollama pull nomic-embed-text
+```
 
 ## 4. Run the Application
 
 ### Windows
 
-    .\mvnw.cmd spring-boot:run
+```powershell
+.\mvnw.cmd spring-boot:run
+```
 
 ### Linux / macOS
 
-    ./mvnw spring-boot:run
+```bash
+./mvnw spring-boot:run
+```
 
 The application can also be started from IntelliJ IDEA.
 
 ## 5. Open the Application
 
-    http://localhost:8080
+```text
+http://localhost:8080
+```
 
 ---
 
 # 🔄 Application Workflow
 
-Upload Resume → PDF Text Extraction → Document Chunking → Embedding Generation → PGVector Storage → Active Resume Context → AI Career Features
-
-The AI Career Features include:
-
-- Resume Chat
-- Resume Analyzer
-- Job Matcher
-- Skill Gap
-- AI Interview
-- Career Roadmap
+```text
+Upload Resume
+      ↓
+PDF Text Extraction
+      ↓
+Document Chunking
+      ↓
+Embedding Generation
+      ↓
+PGVector Storage
+      ↓
+Active Resume Context
+      ↓
+Career Intelligence Features
+      ├── Resume Chat
+      ├── Resume Analyzer
+      ├── Job Matcher
+      ├── Skill Gap
+      ├── Interview Practice
+      └── Career Roadmap
+```
 
 ---
 
@@ -380,7 +517,7 @@ The AI Career Features include:
 
 ---
 
-## 🎤 AI Interview
+## 🎤 Technical Interview
 
 ![AI Interview](screenshots/AI%20Interview3.png)
 
@@ -415,15 +552,25 @@ A candidate wants to apply for a Java Backend Developer role.
 
 The application supports the following workflow:
 
+```text
 1. Upload Resume
+        ↓
 2. Analyze Resume
+        ↓
 3. Paste Job Description
+        ↓
 4. Check Job Match
+        ↓
 5. Analyze Skill Gap
+        ↓
 6. Practice Spring Boot Interview
+        ↓
 7. Generate 90-Day Career Roadmap
+```
 
-This creates a single career workflow from **Resume Analysis → Job Matching → Skill Gap → Learning → Interview Preparation → Career Planning**.
+This creates a single career workflow from:
+
+**Resume Analysis → Job Matching → Skill Gap → Learning → Interview Preparation → Career Planning**
 
 ---
 
@@ -465,8 +612,6 @@ For production deployments, secrets should be supplied through environment varia
 ---
 
 # 🚀 Future Improvements
-
-Potential future enhancements include:
 
 - Real-time job search integration
 - Job recommendation system
